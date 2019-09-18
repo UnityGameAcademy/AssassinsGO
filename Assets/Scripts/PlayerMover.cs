@@ -31,12 +31,6 @@ public class PlayerMover : MonoBehaviour
     void Start()
     {
         UpdateBoard();
-
-        // locate the PlayerNode and initialize
-        if (m_board != null && m_board.PlayerNode != null)
-        {
-            m_board.PlayerNode.InitNode();
-        }
     }
 
     // public method to invole the MoveRoutine

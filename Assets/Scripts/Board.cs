@@ -106,4 +106,15 @@ public class Board : MonoBehaviour
             ));
         }
     }
+
+    // start initializing the Nodes/drawing links
+    public void InitBoard()
+    {
+        if (m_playerNode != null)
+        {
+            m_playerNode.InitNode();
+        }
+    }
+
+
 }
