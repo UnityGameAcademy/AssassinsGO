@@ -62,18 +62,68 @@ public class GameManager : MonoBehaviour
 	// the initial stage after the level is loaded
 	IEnumerator StartLevelRoutine()
     {
-        yield return null;
+        Debug.Log("START LEVEL");
+        m_player.playerInput.InputEnabled = false;
+        while (!m_hasLevelStarted)
+        {
+            //show start screen
+            // user presses button to start
+            // HasLevelStarted = true
+			yield return null;            
+        }
     }
 
 	// gameplay stage
 	IEnumerator PlayLevelRoutine()
 	{
-		yield return null;
+        Debug.Log("PLAY LEVEL");
+        m_isGamePlaying = true;
+        yield return new WaitForSeconds(delay);
+        m_player.playerInput.InputEnabled = true;
+
+        while(!m_isGameOver)
+        {
+            // check for Game Over condition
+
+            // win
+            // reach the end of the level
+
+            // lose
+            // player dies
+
+            // m_isGameOver = true
+			yield return null;            
+        }
 	}
 
 	// end stage after gameplay is complete
 	IEnumerator EndLevelRoutine()
 	{
-		yield return null;
+        Debug.Log("END LEVEL");
+        m_player.playerInput.InputEnabled = false;
+
+        // show end screen
+        while (!m_hasLevelFinished)
+        {
+            // user presses button to continue
+
+            // HasLevelFinished = true
+			yield return null;            
+        }
+
+        RestartLevel();
 	}
+
+    // restart the current level
+    void RestartLevel()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+    }
+
+    // attach to StartButton, triggers PlayLevelRoutine
+    public void PlayLevel()
+    {
+        m_hasLevelStarted = true;
+    }
 }
