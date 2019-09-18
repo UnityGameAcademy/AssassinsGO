@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMover : MonoBehaviour
-{
-     // where the player is currently headed 
+public class PlayerMover : MonoBehaviour {
+
+    // where the player is currently headed 
     public Vector3 destination;
 
     // is the player currently moving?
@@ -22,11 +22,7 @@ public class PlayerMover : MonoBehaviour
 	// Use this for initialization
 	void Start () 
     {
-        // temporarily invoke Move 
-        Move(new Vector3(2f, 0f, 0f), 1f);
-        Move(new Vector3(4f, 0f, 0f), 3f);
-        Move(new Vector3(4f, 0f, 2f), 5f);
-        Move(new Vector3(4f, 0f, 4f), 7f);
+      
 	}
 
     // public method to invole the MoveRoutine
@@ -73,6 +69,34 @@ public class PlayerMover : MonoBehaviour
         // we are not moving
         isMoving = false;
     
+    }
+	
+    // move the player one space in the negative X direction
+    public void MoveLeft()
+    {
+        Vector3 newPosition = transform.position + new Vector3(-2, 0, 0);
+        Move(newPosition,0);
+    }
+
+    // move the player one space in the positive X direction
+    public void MoveRight()
+    {
+        Vector3 newPosition = transform.position + new Vector3(2, 0, 0);
+        Move(newPosition,0);
+    }
+
+    // move the player one space in the positive Z direction
+    public void MoveForward()
+    {
+        Vector3 newPosition = transform.position + new Vector3(0, 0, 2);
+        Move(newPosition,0);
+    }
+
+    // move the player one space in the negative Z direction
+    public void MoveBackward()
+    {
+        Vector3 newPosition = transform.position + new Vector3(0, 0, -2);
+        Move(newPosition,0);
     }
 
 }
