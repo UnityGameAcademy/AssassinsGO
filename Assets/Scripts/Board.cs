@@ -16,6 +16,7 @@ public class Board : MonoBehaviour
         new Vector2(0f, -spacing)
     };
 
+    // list of all of the Nodes on the Board
     List<Node> m_allNodes = new List<Node>();
     public List<Node> AllNodes { get { return m_allNodes; } }
 
@@ -24,10 +25,18 @@ public class Board : MonoBehaviour
         GetNodeList();
     }
 
+    // sets the AllNodes and m_allNodes fields
     public void GetNodeList()
     {
-        Node[] nList = GameObject.FindObjectsOfType<Node>();
+        Node[] nList = Object.FindObjectsOfType<Node>();
         m_allNodes = new List<Node>(nList);
     }
 
+    // returns a Node at a given position
+    public Node FindNodeAt(Vector3 pos)
+    {
+        Vector2 boardCoord = Utility.Vector2Round(new Vector2(pos.x, pos.z));
+        return m_allNodes.Find(n => n.Coordinate == boardCoord);
+
+    }
 }

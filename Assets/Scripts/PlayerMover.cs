@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMover : MonoBehaviour {
+public class PlayerMover : MonoBehaviour
+{
 
     // where the player is currently headed 
     public Vector3 destination;
@@ -19,18 +20,28 @@ public class PlayerMover : MonoBehaviour {
     // delay to use before any call to iTween
     public float iTweenDelay = 0f;
 
-	// Use this for initialization
-	void Start () 
+    Board m_board;
+
+    // Use this for initialization
+    void Awake()
     {
-      
-	}
+        m_board = Object.FindObjectOfType<Board>().GetComponent<Board>();
+    }
 
     // public method to invole the MoveRoutine
     public void Move(Vector3 destinationPos, float delayTime = 0.25f)
     {
-        // start the coroutine MoveRoutine
-        StartCoroutine(MoveRoutine(destinationPos, delayTime));
+        // only move if the destination is at a valid Node
+        if (m_board != null)
+        {
+            Node targetNode = m_board.FindNodeAt(destinationPos);
 
+            if (targetNode != null)
+            {
+                // start the coroutine MoveRoutine
+                StartCoroutine(MoveRoutine(destinationPos, delayTime));
+            }
+        }
     }
 
     // coroutine used to move the player
@@ -51,8 +62,8 @@ public class PlayerMover : MonoBehaviour {
             "y", destinationPos.y,
             "z", destinationPos.z,
             "delay", iTweenDelay,
-            "easetype",easeType,
-            "speed",moveSpeed
+            "easetype", easeType,
+            "speed", moveSpeed
         ));
 
         while (Vector3.Distance(destinationPos, transform.position) > 0.01f)
@@ -68,35 +79,35 @@ public class PlayerMover : MonoBehaviour {
 
         // we are not moving
         isMoving = false;
-    
+
     }
-	
+
     // move the player one space in the negative X direction
     public void MoveLeft()
     {
-        Vector3 newPosition = transform.position + new Vector3(-2, 0, 0);
-        Move(newPosition,0);
+        Vector3 newPosition = transform.position + new Vector3(-Board.spacing, 0f, 0f);
+        Move(newPosition, 0);
     }
 
     // move the player one space in the positive X direction
     public void MoveRight()
     {
-        Vector3 newPosition = transform.position + new Vector3(2, 0, 0);
-        Move(newPosition,0);
+        Vector3 newPosition = transform.position + new Vector3(Board.spacing, 0f, 0f);
+        Move(newPosition, 0);
     }
 
     // move the player one space in the positive Z direction
     public void MoveForward()
     {
-        Vector3 newPosition = transform.position + new Vector3(0, 0, 2);
-        Move(newPosition,0);
+        Vector3 newPosition = transform.position + new Vector3(0f, 0f, Board.spacing);
+        Move(newPosition, 0);
     }
 
     // move the player one space in the negative Z direction
     public void MoveBackward()
     {
-        Vector3 newPosition = transform.position + new Vector3(0, 0, -2);
-        Move(newPosition,0);
+        Vector3 newPosition = transform.position + new Vector3(0f, 0f, -Board.spacing);
+        Move(newPosition, 0);
     }
 
 }
