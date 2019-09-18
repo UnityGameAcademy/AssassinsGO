@@ -38,6 +38,8 @@ public class Node : MonoBehaviour
 
     public LayerMask obstacleLayer;
 
+    public bool isLevelGoal = false;
+
     void Awake()
     {
         // find reference to the Board component

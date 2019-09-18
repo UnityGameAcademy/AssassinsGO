@@ -22,7 +22,17 @@ public class Board : MonoBehaviour
 
     // the Node directly under the Player
     Node m_playerNode;
-    public Node PlayerNode { get { return m_playerNode; }}
+    public Node PlayerNode { get { return m_playerNode; } }
+
+    // the Node representing the end of the maze
+    Node m_goalNode;
+    public Node GoalNode { get { return m_goalNode; } }
+
+    // iTween parameters for drawing the goal
+    public GameObject goalPrefab;
+    public float drawGoalTime = 2f;
+    public float drawGoalDelay = 2f;
+    public iTween.EaseType drawGoalEaseType = iTween.EaseType.easeOutExpo;
 
     // the PlayerMover component
     PlayerMover m_player;
@@ -31,6 +41,8 @@ public class Board : MonoBehaviour
     {
         m_player = Object.FindObjectOfType<PlayerMover>().GetComponent<PlayerMover>();
         GetNodeList();
+
+        m_goalNode = FindGoalNode();
     }
 
     // sets the AllNodes and m_allNodes fields
@@ -46,6 +58,11 @@ public class Board : MonoBehaviour
         Vector2 boardCoord = Utility.Vector2Round(new Vector2(pos.x, pos.z));
         return m_allNodes.Find(n => n.Coordinate == boardCoord);
 
+    }
+
+    Node FindGoalNode()
+    {
+        return m_allNodes.Find(n => n.isLevelGoal);
     }
 
     // return the PlayerNode
@@ -65,7 +82,7 @@ public class Board : MonoBehaviour
     }
 
     // draw a colored sphere at the PlayerNode
-    private void OnDrawGizmos()
+    void OnDrawGizmos()
     {
         Gizmos.color = new Color(0f, 1f, 1f, 0.5f);
         if (m_playerNode != null)
@@ -74,4 +91,19 @@ public class Board : MonoBehaviour
         }
     }
 
+    // draw the Goal prefab at the Goal Node
+    public void DrawGoal()
+    {
+        if (goalPrefab != null && m_goalNode != null)
+        {
+            GameObject goalInstance = Instantiate(goalPrefab, m_goalNode.transform.position,
+                                                  Quaternion.identity);
+            iTween.ScaleFrom(goalInstance, iTween.Hash(
+                "scale", Vector3.zero,
+                "time", drawGoalTime,
+                "delay", drawGoalDelay,
+                "easetype", drawGoalEaseType
+            ));
+        }
+    }
 }
