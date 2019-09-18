@@ -28,6 +28,17 @@ public class PlayerMover : MonoBehaviour
         m_board = Object.FindObjectOfType<Board>().GetComponent<Board>();
     }
 
+    void Start()
+    {
+        UpdateBoard();
+
+        // locate the PlayerNode and initialize
+        if (m_board != null && m_board.PlayerNode != null)
+        {
+            m_board.PlayerNode.InitNode();
+        }
+    }
+
     // public method to invole the MoveRoutine
     public void Move(Vector3 destinationPos, float delayTime = 0.25f)
     {
@@ -36,7 +47,7 @@ public class PlayerMover : MonoBehaviour
         {
             Node targetNode = m_board.FindNodeAt(destinationPos);
 
-            if (targetNode != null)
+            if (targetNode != null && m_board.PlayerNode.LinkedNodes.Contains(targetNode))
             {
                 // start the coroutine MoveRoutine
                 StartCoroutine(MoveRoutine(destinationPos, delayTime));
@@ -80,6 +91,7 @@ public class PlayerMover : MonoBehaviour
         // we are not moving
         isMoving = false;
 
+        UpdateBoard();
     }
 
     // move the player one space in the negative X direction
@@ -110,4 +122,11 @@ public class PlayerMover : MonoBehaviour
         Move(newPosition, 0);
     }
 
+    void UpdateBoard()
+    {
+        if (m_board != null)
+        {
+            m_board.UpdatePlayerNode();
+        }
+    }
 }
