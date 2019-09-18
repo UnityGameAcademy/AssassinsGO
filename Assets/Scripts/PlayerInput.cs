@@ -16,8 +16,6 @@ public class PlayerInput : MonoBehaviour
     bool m_inputEnabled = false;
     public bool InputEnabled { get { return m_inputEnabled; } set { m_inputEnabled = value; } }
 
-    // playerInput.InputEnabled = true;
-
     // get keyboard input
     public void GetKeyInput()
     {
