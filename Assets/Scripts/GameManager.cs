@@ -31,6 +31,11 @@ public class GameManager : MonoBehaviour
     // delay in between game stages
     public float delay = 1f;
 
+    // events invoked for StartLevel/PlayLevel/EndLevel coroutines
+    public UnityEvent startLevelEvent;
+    public UnityEvent playLevelEvent;
+    public UnityEvent endLevelEvent;
+
 	void Awake()
     {
         // populate Board and PlayerManager components
@@ -71,6 +76,12 @@ public class GameManager : MonoBehaviour
             // HasLevelStarted = true
 			yield return null;            
         }
+
+        // trigger events when we press the StartButton
+        if (startLevelEvent != null)
+        {
+            startLevelEvent.Invoke();
+        }
     }
 
 	// gameplay stage
@@ -80,6 +91,12 @@ public class GameManager : MonoBehaviour
         m_isGamePlaying = true;
         yield return new WaitForSeconds(delay);
         m_player.playerInput.InputEnabled = true;
+
+        // trigger any events as we start playing the level
+        if (playLevelEvent != null)
+        {
+            playLevelEvent.Invoke();
+        }
 
         while(!m_isGameOver)
         {
@@ -102,6 +119,12 @@ public class GameManager : MonoBehaviour
         Debug.Log("END LEVEL");
         m_player.playerInput.InputEnabled = false;
 
+        // run events when we end the level
+        if (endLevelEvent != null)
+        {
+            endLevelEvent.Invoke();
+        }
+
         // show end screen
         while (!m_hasLevelFinished)
         {
@@ -111,6 +134,7 @@ public class GameManager : MonoBehaviour
 			yield return null;            
         }
 
+        // reload the current scene
         RestartLevel();
 	}
 
