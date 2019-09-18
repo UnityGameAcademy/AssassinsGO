@@ -39,6 +39,8 @@ public class Node : MonoBehaviour
     // whether the node has already been initialized
     bool m_isInitialized = false;
 
+    public LayerMask obstacleLayer;
+
     void Awake()
     {
         // find reference to the Board component
@@ -134,11 +136,14 @@ public class Node : MonoBehaviour
         // run InitNode on each neighboring node if they are not already linked
         foreach (Node n in m_neighborNodes)
         {
-
             if (!m_linkedNodes.Contains(n))
             {
-				LinkNode(n);
-				n.InitNode();                
+                Obstacle obstacle = FindObstacle(n);
+                if (obstacle == null)
+                {
+                    LinkNode(n);
+                    n.InitNode();
+                }
             }
         }
     }
@@ -170,5 +175,19 @@ public class Node : MonoBehaviour
                 targetNode.LinkedNodes.Add(this);
             }
         }
+    }
+
+    Obstacle FindObstacle(Node targetNode)
+    {
+        Vector3 checkDirection = targetNode.transform.position - transform.position;
+        RaycastHit raycastHit;
+
+        if (Physics.Raycast(transform.position, checkDirection, out raycastHit, Board.spacing + 0.1f,
+                            obstacleLayer))
+        {
+            Debug.Log("NODE FindObstacle: Hit an obstacle from " + this.name + " to " + targetNode.name);
+            return raycastHit.collider.GetComponent<Obstacle>();
+        }
+        return null;
     }
 }

@@ -127,3 +127,6 @@ MonoBehaviour:
   easeType: 15
   autoRun: 0
   delay: 0.1
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 256
