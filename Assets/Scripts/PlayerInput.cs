@@ -25,6 +25,12 @@ public class PlayerInput : MonoBehaviour
             m_h = Input.GetAxisRaw("Horizontal");
             m_v = Input.GetAxisRaw("Vertical");
         }
+        // if input is disabled, ensure that extra key input does not cause unintended movement
+        else
+        {
+            m_h = 0f;
+            m_v = 0f;
+        }
     }
 
 }
