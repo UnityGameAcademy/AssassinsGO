@@ -30,6 +30,9 @@ public class Node : MonoBehaviour
     // delay time before animation
     public float delay = 1f;
 
+    // whether the node has already been initialized
+    bool m_isInitialized = false;
+
     void Awake()
     {
 		// find reference to the Board component
@@ -49,7 +52,7 @@ public class Node : MonoBehaviour
             // play scale animation at Start
             if (autoRun)
             {
-                ShowGeometry();
+                InitNode();
             }
 
 			// find the neighboring nodes
@@ -94,5 +97,38 @@ public class Node : MonoBehaviour
         }
 		// return our temporary list
 		return nList;
+    }
+
+    public void InitNode()
+    {
+        // if the Node has not been activated yet...
+        if (!m_isInitialized)
+        {
+            // show the geometry
+            ShowGeometry();
+
+            // trigger its neighbors to the do the same
+            InitNeighbors();
+
+            // set our initialization state to true
+            m_isInitialized = true;
+        }
+    }
+
+    void InitNeighbors()
+    {
+        StartCoroutine(InitNeighborsRoutine());
+    }
+
+    IEnumerator InitNeighborsRoutine()
+    {
+    	// pause for a short delay
+        yield return new WaitForSeconds(delay);
+
+		// run InitNode on each neighboring node
+        foreach (Node n in m_neighborNodes)
+        {
+            n.InitNode();
+        }
     }
 }
