@@ -19,11 +19,6 @@ public class Link : MonoBehaviour
     // iTween ease type
     public iTween.EaseType easeType = iTween.EaseType.easeInOutExpo;
 
-    void Start()
-    {
-        // for testing, draw a link between two points in space
-        DrawLink(new Vector3(4f, 0f, 0f), new Vector3(4f, 0f, 2f));
-    }
 
     // draws the link by scaling it up from 0
     public void DrawLink(Vector3 startPos, Vector3 endPos)
