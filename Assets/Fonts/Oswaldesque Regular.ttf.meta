@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 4fe425fba90ab4033bf6c7cc8a99a796
+timeCreated: 1506957381
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 40
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: 'Oswaldesque '
+  fontNames:
+  - 'Oswaldesque '
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
