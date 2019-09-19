@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public float delay = 1f;
 
     // events invoked for StartLevel/PlayLevel/EndLevel coroutines
+    public UnityEvent setupEvent;
     public UnityEvent startLevelEvent;
     public UnityEvent playLevelEvent;
     public UnityEvent endLevelEvent;
@@ -67,6 +68,12 @@ public class GameManager : MonoBehaviour
     // the initial stage after the level is loaded
     IEnumerator StartLevelRoutine()
     {
+        Debug.Log("SETUP LEVEL");
+        if (setupEvent != null)
+        {
+            setupEvent.Invoke();
+        }
+
         Debug.Log("START LEVEL");
         m_player.playerInput.InputEnabled = false;
         while (!m_hasLevelStarted)
