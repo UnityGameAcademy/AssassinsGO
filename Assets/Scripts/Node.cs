@@ -88,7 +88,7 @@ public class Node : MonoBehaviour
         foreach (Vector2 dir in Board.directions)
         {
             // find a neighboring node at the current direction...
-            Node foundNeighbor = nodes.Find(n => n.Coordinate == Coordinate + dir);
+            Node foundNeighbor = FindNeighborAt(nodes, dir);
 
             // if we find a neighbor at this direction, add it to the list
             if (foundNeighbor != null && !nList.Contains(foundNeighbor))
@@ -99,6 +99,17 @@ public class Node : MonoBehaviour
         // return our temporary list
         return nList;
     }
+
+    public Node FindNeighborAt(List<Node> nodes, Vector2 dir)
+    {
+        return nodes.Find(n => n.Coordinate == Coordinate + dir);
+    }
+
+    public Node FindNeighborAt(Vector2 dir)
+    {
+        return FindNeighborAt(NeighborNodes, dir);
+    }
+
 
     public void InitNode()
     {

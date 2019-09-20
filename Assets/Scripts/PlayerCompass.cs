@@ -39,9 +39,6 @@ public class PlayerCompass : MonoBehaviour
 
 		// create the arrow heads
 		SetupArrows();
-
-		// start animating the arrow heads
-		MoveArrows();
     }
 
     void SetupArrows()
@@ -80,7 +77,7 @@ public class PlayerCompass : MonoBehaviour
 	// use iTween to animate a single arrow
 	void MoveArrow(GameObject arrowInstance)
     {
-		// animate the arrow in a cycle from startDistance to endDistance in local z
+        // animate the arrow in a cycle from startDistance to endDistance in local z
 		iTween.MoveBy(arrowInstance, iTween.Hash(
             "z", endDistance - startDistance,
             "looptype", iTween.LoopType.loop,
@@ -95,6 +92,53 @@ public class PlayerCompass : MonoBehaviour
         foreach (GameObject arrow in m_arrows)
         {
             MoveArrow(arrow);
+        }
+    }
+
+    public void ShowArrows(bool state)
+    {
+        if (m_board == null)
+        {
+            Debug.LogWarning("PLAYERCOMPASS ShowArrows ERROR: no Board found!");
+            return;
+        }
+
+        if (m_arrows == null || m_arrows.Count != Board.directions.Length)
+		{
+			Debug.LogWarning("PLAYERCOMPASS ShowArrows ERROR: no arrows found!");
+			return;
+		}
+
+        if (m_board.PlayerNode != null)
+        {
+            for (int i = 0; i < Board.directions.Length; i++)
+            {
+                Node neighbor = m_board.PlayerNode.FindNeighborAt(Board.directions[i]);
+
+                if (neighbor == null || !state)
+                {
+                    m_arrows[i].SetActive(false);
+                }
+                else
+                {
+                    bool activeState = m_board.PlayerNode.LinkedNodes.Contains(neighbor);
+                    m_arrows[i].SetActive(activeState);
+                }
+            }
+        }
+
+        ResetArrows();
+        MoveArrows();
+    }
+
+    void ResetArrows()
+    {
+        for (int i = 0; i < Board.directions.Length; i++)
+        {
+            iTween.Stop(m_arrows[i]);
+            Vector3 dirVector = new Vector3(Board.directions[i].normalized.x, 0f,
+                                            Board.directions[i].normalized.y);
+            m_arrows[i].transform.position = transform.position + dirVector * startDistance;
         }
     }
 }
