@@ -24,6 +24,8 @@ public class Mover : MonoBehaviour
     // reference to Board
     protected Board m_board;
 
+    protected Node m_currentNode;
+
     // setup the Mover
     protected virtual void Awake()
     {
@@ -32,21 +34,31 @@ public class Mover : MonoBehaviour
 
     protected virtual void Start()
     {
-       
+        UpdateCurrentNode();
     }
 
     // public method to invole the MoveRoutine
     public void Move(Vector3 destinationPos, float delayTime = 0.25f)
     {
+        if (isMoving)
+        {
+            return;
+        }
+
         // only move if the destination is at a valid Node
         if (m_board != null)
         {
             Node targetNode = m_board.FindNodeAt(destinationPos);
 
-            if (targetNode != null && m_board.PlayerNode.LinkedNodes.Contains(targetNode))
+            if (targetNode != null && m_currentNode != null && 
+                m_currentNode.LinkedNodes.Contains(targetNode))
             {
                 // start the coroutine MoveRoutine
                 StartCoroutine(MoveRoutine(destinationPos, delayTime));
+            }
+            else
+            {
+                Debug.Log("MOVER Error: current Node not connected to target Node");
             }
         }
     }
@@ -88,6 +100,8 @@ public class Mover : MonoBehaviour
         // we are not moving
         isMoving = false;
 
+        UpdateCurrentNode();
+
     }
 
     // move one space in the negative X direction
@@ -118,5 +132,12 @@ public class Mover : MonoBehaviour
         Move(newPosition, 0);
     }
 
+    protected void UpdateCurrentNode()
+    {
+        if (m_board != null)
+        {
+            m_currentNode = m_board.FindNodeAt(transform.position);
+        }
+    }
 
 }
