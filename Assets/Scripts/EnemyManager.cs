@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(EnemySensor))]
 public class EnemyManager : TurnManager
 {
-	// reference to EnemyMover component
+    // reference to EnemyMover component
     EnemyMover m_enemyMover;
 
     // reference to EnemySensor component
@@ -35,15 +35,26 @@ public class EnemyManager : TurnManager
     // main enemy routine: detect/attack Player if possible...then move/wait
     IEnumerator PlayTurnRoutine()
     {
-        // detect player
-        m_enemySensor.UpdateSensor();
+        if (m_gameManager != null && !m_gameManager.IsGameOver)
+        {
+            // detect player
+            m_enemySensor.UpdateSensor();
 
-		// attack player
+            // wait
+            yield return new WaitForSeconds(0f);
 
-		// wait
-		yield return new WaitForSeconds(0f);
+            if (m_enemySensor.FoundPlayer)
+            {
+                // attack player   
 
-        // movement
-        m_enemyMover.MoveOneTurn();
+                // notify the GameManager to lose the level
+                m_gameManager.LoseLevel();
+            }
+            else
+            {
+                // movement
+                m_enemyMover.MoveOneTurn();
+            }
+        }
     }
 }
