@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 // base class for all moving game pieces
 public class Mover : MonoBehaviour
@@ -32,6 +33,8 @@ public class Mover : MonoBehaviour
 
     // current Node on the Board
     protected Node m_currentNode;
+
+    public UnityEvent finishMovementEvent;
 
     // setup the Mover
     protected virtual void Awake()

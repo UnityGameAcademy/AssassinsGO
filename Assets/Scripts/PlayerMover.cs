@@ -48,5 +48,8 @@ public class PlayerMover : Mover
 		{
 			m_playerCompass.ShowArrows(true);
 		}
+
+        // broadcast message at the end of movement
+        base.finishMovementEvent.Invoke();
     }
 }

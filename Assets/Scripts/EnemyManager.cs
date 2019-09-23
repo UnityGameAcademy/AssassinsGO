@@ -38,13 +38,12 @@ public class EnemyManager : TurnManager
         // detect player
         m_enemySensor.UpdateSensor();
 
-        // attack player
+		// attack player
+
+		// wait
+		yield return new WaitForSeconds(0.5f);
 
         // movement
-        // m_enemyMover some move method
-
-        // wait
-        yield return new WaitForSeconds(2f);
-
+        m_enemyMover.MoveOneTurn();
     }
 }

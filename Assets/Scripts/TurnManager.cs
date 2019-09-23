@@ -23,7 +23,10 @@ public class TurnManager : MonoBehaviour
     {
         m_isTurnComplete = true;
 
-        // update the GameManager
+        if (m_gameManager != null)
+        {
+            m_gameManager.UpdateTurn();
+        }
 
     }
 }
