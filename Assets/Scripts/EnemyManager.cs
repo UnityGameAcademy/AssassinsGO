@@ -25,4 +25,26 @@ public class EnemyManager : TurnManager
         m_enemySensor = GetComponent<EnemySensor>();
 
     }
+
+    // play the Enemy's turn routine
+    public void PlayTurn()
+    {
+        StartCoroutine(PlayTurnRoutine());
+    }
+
+    // main enemy routine: detect/attack Player if possible...then move/wait
+    IEnumerator PlayTurnRoutine()
+    {
+        // detect player
+        m_enemySensor.UpdateSensor();
+
+        // attack player
+
+        // movement
+        // m_enemyMover some move method
+
+        // wait
+        yield return new WaitForSeconds(2f);
+
+    }
 }
