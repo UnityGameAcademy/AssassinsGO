@@ -8,7 +8,10 @@ public class Mover : MonoBehaviour
 
     // where we are currently headed 
     public Vector3 destination;
-     
+
+    // option to face the direction of movement
+    public bool faceDestination = false;
+
     // are we currently moving?
     public bool isMoving = false;
 
@@ -18,12 +21,16 @@ public class Mover : MonoBehaviour
     // how fast we move
     public float moveSpeed = 1.5f;
 
+    // time to rotate to face destination
+    public float rotateTime = 0.5f;
+
     // delay to use before any call to iTween
     public float iTweenDelay = 0f;
 
     // reference to Board
     protected Board m_board;
 
+    // current Node on the Board
     protected Node m_currentNode;
 
     // setup the Mover
@@ -34,6 +41,7 @@ public class Mover : MonoBehaviour
 
     protected virtual void Start()
     {
+        // update m_currentNode
         UpdateCurrentNode();
     }
 
@@ -72,6 +80,13 @@ public class Mover : MonoBehaviour
 
         // set the destination to the destinationPos being passed into the coroutine
         destination = destinationPos;
+
+        // optional turn to face destination
+        if (faceDestination)
+        {
+            FaceDestination();
+            yield return new WaitForSeconds(0.25f);
+        }
 
         // pause the coroutine for a brief periof
         yield return new WaitForSeconds(delayTime);
@@ -132,6 +147,7 @@ public class Mover : MonoBehaviour
         Move(newPosition, 0);
     }
 
+    // update the current Node field
     protected void UpdateCurrentNode()
     {
         if (m_board != null)
@@ -140,4 +156,24 @@ public class Mover : MonoBehaviour
         }
     }
 
+    // turn to face the direction of movement
+    void FaceDestination()
+    {
+        // direction to destination
+        Vector3 relativePosition = destination - transform.position;
+
+        // vector direction converted to a Quaternion rotation
+        Quaternion newRotation = Quaternion.LookRotation(relativePosition, Vector3.up);
+
+        // euler angle y component 
+        float newY = newRotation.eulerAngles.y;
+
+        // iTween rotate
+        iTween.RotateTo(gameObject, iTween.Hash(
+            "y", newY,
+            "delay", 0f,
+            "easetype", easeType,
+            "time", rotateTime
+        ));
+    }
 }
