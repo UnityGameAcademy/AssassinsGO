@@ -160,7 +160,7 @@ public class Mover : MonoBehaviour
     }
 
     // turn to face the direction of movement
-    void FaceDestination()
+    protected void FaceDestination()
     {
         // direction to destination
         Vector3 relativePosition = destination - transform.position;
