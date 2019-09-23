@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(EnemyMover))]
 [RequireComponent(typeof(EnemySensor))]
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : TurnManager
 {
 	// reference to EnemyMover component
     EnemyMover m_enemyMover;
@@ -16,8 +16,10 @@ public class EnemyManager : MonoBehaviour
     Board m_board;
 
     // setup member variables
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         m_board = Object.FindObjectOfType<Board>().GetComponent<Board>();
         m_enemyMover = GetComponent<EnemyMover>();
         m_enemySensor = GetComponent<EnemySensor>();
