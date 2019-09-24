@@ -1,14 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(PlayerMover))]
 [RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerDeath))]
 public class PlayerManager : TurnManager
 {
 	// reference to PlayerMover and PlayerInput components
 	public PlayerMover playerMover;
     public PlayerInput playerInput;
+
+    public UnityEvent deathEvent;
 
     protected override void Awake()
     {
@@ -55,6 +59,14 @@ public class PlayerManager : TurnManager
             {
                 playerMover.MoveForward();
             }
+        }
+    }
+
+    public void Die()
+    {
+        if (deathEvent != null)
+        {
+            deathEvent.Invoke();
         }
     }
 }

@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("START LEVEL");
         m_player.playerInput.InputEnabled = false;
+
         while (!m_hasLevelStarted)
         {
             //show start screen
@@ -145,7 +146,10 @@ public class GameManager : MonoBehaviour
     	// game is over
         m_isGameOver = true;
 
-        // invoke loseLoveEvent
+        // wait for a short delay then...
+        yield return new WaitForSeconds(1.5f);
+
+        // ...invoke loseLoveEvent
         if (loseLevelEvent != null)
         {
             loseLevelEvent.Invoke();

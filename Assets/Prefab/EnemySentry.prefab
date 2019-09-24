@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 114706957598839670}
   - component: {fileID: 114428179042850482}
   - component: {fileID: 114919916672846376}
+  - component: {fileID: 114974673363812240}
   m_Layer: 0
   m_Name: EnemySentry
   m_TagString: Untagged
@@ -149,3 +150,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   directionToSearch: {x: 0, y: 0, z: 2}
+--- !u!114 &114974673363812240
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1886805211769398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30983df2d135742c5ade79cd1198a61c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
