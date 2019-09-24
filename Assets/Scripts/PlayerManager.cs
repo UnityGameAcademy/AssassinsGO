@@ -12,6 +12,10 @@ public class PlayerManager : TurnManager
 	public PlayerMover playerMover;
     public PlayerInput playerInput;
 
+    // reference to Board component
+    Board m_board;
+
+    // messages to send when the Player dies
     public UnityEvent deathEvent;
 
     protected override void Awake()
@@ -21,6 +25,8 @@ public class PlayerManager : TurnManager
 		// cache references to PlayerMover and PlayerInput
 		playerMover = GetComponent<PlayerMover>();
         playerInput = GetComponent<PlayerInput>();
+
+        m_board = Object.FindObjectOfType<Board>().GetComponent<Board>();
 
 		// make sure that input is enabled when we begin
 		playerInput.InputEnabled = true;
@@ -62,6 +68,7 @@ public class PlayerManager : TurnManager
         }
     }
 
+    // invoke any UnityActions on the deathEvent
     public void Die()
     {
         if (deathEvent != null)
@@ -69,4 +76,38 @@ public class PlayerManager : TurnManager
             deathEvent.Invoke();
         }
     }
+
+    // capture any enemies on the PlayerNode
+    void CaptureEnemies()
+    {
+        if (m_board != null)
+        {
+            // all enemies on the PlayerNode
+            List<EnemyManager> enemies = m_board.FindEnemiesAt(m_board.PlayerNode);
+
+            // if we find at least one enemy...
+            if (enemies.Count != 0)
+            {
+                // ...invoke the Die method on each one
+                foreach (EnemyManager enemy in enemies)
+                {
+                    if (enemy != null)
+                    {
+                        enemy.Die();
+                    }
+                }
+            }
+        }
+    }
+
+    // override the TurnManager's FinishTurn
+    public override void FinishTurn()
+    {
+        // capture any enemies standing on the PlayerNode
+        CaptureEnemies();
+
+        // tell the GameManager the PlayerTurn is complete
+        base.FinishTurn();
+    }
+
 }

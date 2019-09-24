@@ -19,7 +19,7 @@ public class TurnManager : MonoBehaviour
     }
 
     // complete the turn and notify the GameManager
-    public void FinishTurn()
+    public virtual void FinishTurn()
     {
         m_isTurnComplete = true;
 
@@ -27,6 +27,5 @@ public class TurnManager : MonoBehaviour
         {
             m_gameManager.UpdateTurn();
         }
-
     }
 }
