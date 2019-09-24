@@ -28,6 +28,7 @@ public class Board : MonoBehaviour
     Node m_goalNode;
     public Node GoalNode { get { return m_goalNode; } }
 
+ 
     // iTween parameters for drawing the goal
     public GameObject goalPrefab;
     public float drawGoalTime = 2f;
@@ -37,7 +38,20 @@ public class Board : MonoBehaviour
     // the PlayerMover component
     PlayerMover m_player;
 
-    void Awake()
+    // transforms storing positions for captured enemies
+    public List<Transform> capturePositions;
+
+    // next index of capturePositions to use
+    int m_currentCapturePosition = 0;
+	public int CurrentCapturePosition { get { return m_currentCapturePosition; } 
+        set { m_currentCapturePosition = value; } }
+
+    // icon and color of each capturePosition
+    public float capturePositionIconSize = 0.4f;
+    public Color capturePositionIconColor = Color.blue;
+
+
+	void Awake()
     {
         m_player = Object.FindObjectOfType<PlayerMover>().GetComponent<PlayerMover>();
         GetNodeList();
@@ -74,6 +88,23 @@ public class Board : MonoBehaviour
         return null;
     }
 
+    public List<EnemyManager> FindEnemiesAt(Node node)
+    {
+        List<EnemyManager> foundEnemies = new List<EnemyManager>();
+        EnemyManager[] enemies = Object.FindObjectsOfType<EnemyManager>() as EnemyManager[];
+
+        foreach (EnemyManager enemy in enemies)
+        {
+            EnemyMover mover = enemy.GetComponent<EnemyMover>();
+
+            if (mover.CurrentNode == node)
+            {
+                foundEnemies.Add(enemy);
+            }
+        }
+        return foundEnemies;
+    }
+
     // set the m_playerNode
     public void UpdatePlayerNode()
     {
@@ -87,6 +118,14 @@ public class Board : MonoBehaviour
         if (m_playerNode != null)
         {
             Gizmos.DrawSphere(m_playerNode.transform.position, 0.2f);
+        }
+
+        // draw capture positions
+        Gizmos.color = capturePositionIconColor;
+
+        foreach (Transform capturePos in capturePositions)
+        {
+            Gizmos.DrawCube(capturePos.position, Vector3.one * capturePositionIconSize);
         }
     }
 

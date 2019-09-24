@@ -33,6 +33,7 @@ public class Mover : MonoBehaviour
 
     // current Node on the Board
     protected Node m_currentNode;
+    public Node CurrentNode { get { return m_currentNode; } }
 
     public UnityEvent finishMovementEvent;
 
@@ -61,7 +62,7 @@ public class Mover : MonoBehaviour
         {
             Node targetNode = m_board.FindNodeAt(destinationPos);
 
-            if (targetNode != null && m_currentNode != null && 
+            if (targetNode != null && m_currentNode != null &&
                 m_currentNode.LinkedNodes.Contains(targetNode))
             {
                 // start the coroutine MoveRoutine
