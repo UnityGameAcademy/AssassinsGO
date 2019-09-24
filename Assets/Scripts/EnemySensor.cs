@@ -24,7 +24,7 @@ public class EnemySensor : MonoBehaviour
     }
 
     // check if the Player has moved into our sensor
-    public void UpdateSensor()
+    public void UpdateSensor(Node enemyNode)
     {
         // convert the local directionToSearch into a world space 3d position
         Vector3 worldSpacePositionToSearch = transform.TransformVector(directionToSearch) 
@@ -33,6 +33,13 @@ public class EnemySensor : MonoBehaviour
         {
             // find the node at the world space position to search
             m_nodeToSearch = m_board.FindNodeAt(worldSpacePositionToSearch);
+
+            // if the enemy's Node is not connected to the Node to search, we cannot detect the Player...
+            if (!enemyNode.LinkedNodes.Contains(m_nodeToSearch))
+            {
+                m_foundPlayer = false;
+                return;
+            }
 
             // if the node to search is the PlayerNode, then we have found the Player
             if (m_nodeToSearch == m_board.PlayerNode)
